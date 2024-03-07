@@ -25,3 +25,14 @@ export type ServerTypes = {
   time: number;
   runAt: string;
 };
+
+export type protectedRoutes = Exclude<typeof routes[number], '/login' | '/register'>;
+
+export type MiddlewareConfigType = {
+  matcher: [...protectedRoutes[]]
+}
+
+export type LogInFormInput = {
+  email: string,
+  password: string,
+}

@@ -1,6 +1,6 @@
 "use client";
 
-import { ServerTypes } from "@/app/types";
+import { ServerTypes } from "@/types";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";

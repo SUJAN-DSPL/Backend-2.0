@@ -8,7 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { FaChartPie } from "react-icons/fa";
 import CardSkeleton from "./card-skeleton";
 import axios from "axios";
-import { ServerTypes } from "@/app/types";
+import { ServerTypes } from "@/types";
 import { FaBoxes } from "react-icons/fa";
 import { PiChartLineUp } from "react-icons/pi";
 import { FaMoneyCheckAlt } from "react-icons/fa";
