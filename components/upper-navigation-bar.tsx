@@ -14,6 +14,7 @@ import React from "react";
 import ThemeToggler from "./ui/theme-toggler";
 import Link from "next/link";
 import { Input } from "./ui/input";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 
 interface UpperNavigationBarProps {}
 
@@ -25,17 +26,31 @@ const UpperNavigationBar: FC<UpperNavigationBarProps> = () => {
     >
       <div className=" flex h-20 items-center justify-between selection">
         <div className="text-xl md:text-2xl font-semibold">
-          <p className="font-semibold text-2xl mb-1">Good Morning, Sujan</p>
-          <p className=" font-semibold text-xs text-muted-foreground">
-            Market has been{" "}
-            <span className=" text-secondary-foreground">growing</span>
-            in Volume of <span className=" text-secondary-foreground">30%</span>
-          </p>
+          <div className="font-semibold text-2xl mb-1 flex items-center gap-5">
+            {" "}
+            <ProfileDropDown />{" "}
+            <div>
+              <p>Good Morning, Sujan</p>
+              <p className=" font-semibold text-xs text-muted-foreground">
+                Market has been{" "}
+                <span className=" text-secondary-foreground">growing</span>
+                {" "} in Volume of{" "}
+                <span className=" text-secondary-foreground">30%</span>
+              </p>
+            </div>
+          </div>
         </div>
-        <div className="flex items-center justify-between space-x-2 md:justify-end">
-          <Input type="text" className="w-80" placeholder="search..." />
+        <div className=" flex items-center gap-2">
+          {/* <Input type="text" className="w-80" placeholder="search..." /> */}
+          <Tabs defaultValue="overview" className="mt-1">
+            <TabsList className="grid grid-cols-4">
+              <TabsTrigger value="overview">2021</TabsTrigger>
+              <TabsTrigger value="top5Traffics">2022</TabsTrigger>
+              <TabsTrigger value="trafficByCountry">2023</TabsTrigger>
+              <TabsTrigger value="trafficByCountry">2024</TabsTrigger>
+            </TabsList>
+          </Tabs>
           <ThemeToggler />
-          <ProfileDropDown />
         </div>
       </div>
     </header>

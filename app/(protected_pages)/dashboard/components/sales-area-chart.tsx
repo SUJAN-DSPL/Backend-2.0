@@ -1,6 +1,6 @@
 "use client";
 
-import { ServerTypes } from "@/types";
+
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -94,11 +94,7 @@ interface SalesAreaChartProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 const SalesAreaChart = React.forwardRef<HTMLDivElement, SalesAreaChartProps>(
   ({ className, children, ...props }, ref) => {
-    const cronLogQuery = useQuery({
-      queryKey: [`server`],
-      queryFn: async () => null,
-      refetchInterval: 5000,
-    }) as UseQueryResult<[]>;
+ 
 
     return (
       <Card className={cn("col-span-3", className)} ref={ref} {...props}>

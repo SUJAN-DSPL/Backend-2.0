@@ -5,7 +5,6 @@ import type { NextFetchEvent } from 'next/server'
 export default function apiMiddleWare(middleware: NextMiddlewareWithAuth) {
     return async (request: NextRequestWithAuth, event: NextFetchEvent) => {
         
-        console.log("hello this is a middleware")
         // if (!request?.nextauth?.token?.emailVerified) {
         //     const url = new URL(`/verify-email/${request?.nextauth?.token?.email}`, request.url);
         //     return Response.redirect(url)
@@ -15,6 +14,3 @@ export default function apiMiddleWare(middleware: NextMiddlewareWithAuth) {
     }
 }
 
-export const config = {
-    matcher: '/api/*'
-  }

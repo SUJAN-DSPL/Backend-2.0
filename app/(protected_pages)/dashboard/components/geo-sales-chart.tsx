@@ -1,7 +1,5 @@
 "use client";
 
-import { ServerTypes } from "@/types";
-
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -31,12 +29,7 @@ interface GeoSalesChartProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 const GeoSalesChart = React.forwardRef<HTMLDivElement, GeoSalesChartProps>(
   ({ className, children, ...props }, ref) => {
-    const cronLogQuery = useQuery({
-      queryKey: [`server`],
-      queryFn: async () => null,
-      refetchInterval: 5000,
-    }) as UseQueryResult<[]>;
-
+ 
     const options = {
       //   region: "002", // Africa
       //   colorAxis: { colors: ["#00853f", "black", "#e31b23"] },

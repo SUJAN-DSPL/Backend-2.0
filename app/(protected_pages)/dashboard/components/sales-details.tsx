@@ -2,28 +2,24 @@
 
 import { cn } from "@/lib/utils";
 import React from "react";
-import { UseQueryResult, useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 import { FaChartPie } from "react-icons/fa";
 import CardSkeleton from "./card-skeleton";
-import axios from "axios";
-import { ServerTypes } from "@/types";
 import { FaBox } from "react-icons/fa";
 import { PiChartLineUp } from "react-icons/pi";
 import { PiChartLineDown } from "react-icons/pi";
-import { GiMoneyStack } from "react-icons/gi";
 import { RiMoneyPoundCircleFill } from "react-icons/ri";
+import { OrderContext } from "../context/OrderContext";
+import { OrderContextType } from "@/types";
 
 interface SalesDetailsProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 const SalesDetails = React.forwardRef<HTMLDivElement, SalesDetailsProps>(
   ({ className, children, ...props }, ref) => {
-    const serverQuery = useQuery({
-      queryKey: [`server`],
-      queryFn: async () => null,
-      refetchInterval: 5000,
-    }) as UseQueryResult<ServerTypes>;
+    const { isLoading, overview, year } = React.useContext(
+      OrderContext
+    ) as OrderContextType;
 
     return (
       <div
@@ -31,7 +27,7 @@ const SalesDetails = React.forwardRef<HTMLDivElement, SalesDetailsProps>(
         ref={ref}
         {...props}
       >
-        {serverQuery.isLoading ? (
+        {isLoading ? (
           <CardSkeleton />
         ) : (
           <Card className=" border-none">
@@ -43,25 +39,31 @@ const SalesDetails = React.forwardRef<HTMLDivElement, SalesDetailsProps>(
             </CardHeader>
             <CardContent className="flex flex-col ">
               <div className="text-2xl font-bold flex items-center gap-2">
-                <span>2500000</span>
-                <span className="text-green-400 flex text-sm items-center gap-2">
-                  + 20 % <PiChartLineUp className=" " size={25} />
-                </span>
+                <span>{overview.order.total_order}</span>
+
+                {overview.order.growth_percentage > 0 ? (
+                  <span className="text-green-400 flex text-sm items-center gap-2">
+                    + {Math.floor(overview.order.growth_percentage)} %{" "}
+                    <PiChartLineUp className=" " size={25} />
+                  </span>
+                ) : (
+                  <div className="text-2xl font-bold flex items-center gap-2">
+                    <span className="text-red-400 flex text-sm items-center gap-2">
+                      - {Math.floor(overview.order.growth_percentage)} %{" "}
+                      <PiChartLineDown className=" " size={25} />
+                    </span>
+                  </div>
+                )}
               </div>
 
-              <p
-                className={`text-xs text-muted-foreground ${
-                  serverQuery.data?.server?.memory_status == "critical" &&
-                  "text-red-400"
-                }`}
-              >
-                more orders than prev month
+              <p className={`text-xs text-muted-foreground`}>
+                {year - 1} total orders was {overview.order.prev_total_order}
               </p>
             </CardContent>
           </Card>
         )}
 
-        {serverQuery.isLoading ? (
+        {isLoading ? (
           <CardSkeleton />
         ) : (
           <Card className=" border-none">
@@ -69,29 +71,39 @@ const SalesDetails = React.forwardRef<HTMLDivElement, SalesDetailsProps>(
               <CardTitle className="text-sm font-medium">
                 Total Revenue
               </CardTitle>
-              <RiMoneyPoundCircleFill size={25} className="text-muted-foreground" />
+              <RiMoneyPoundCircleFill
+                size={25}
+                className="text-muted-foreground"
+              />
             </CardHeader>
             <CardContent className="flex flex-col ">
               <div className="text-2xl font-bold flex items-center gap-2">
-                <span>25000000</span>
-                <span className="text-red-400 flex text-sm items-center gap-2">
-                  - 10 % <PiChartLineDown className=" " size={25} />
-                </span>
+                <span>{Math.floor(overview.revenue.total_revenue)}</span>
+
+                {overview.revenue.growth_percentage > 0 ? (
+                  <span className="text-green-400 flex text-sm items-center gap-2">
+                    + {Math.floor(overview.revenue.growth_percentage)} %{" "}
+                    <PiChartLineUp className=" " size={25} />
+                  </span>
+                ) : (
+                  <div className="text-2xl font-bold flex items-center gap-2">
+                    <span className="text-red-400 flex text-sm items-center gap-2">
+                      - {Math.floor(overview.revenue.growth_percentage)} %{" "}
+                      <PiChartLineDown className=" " size={25} />
+                    </span>
+                  </div>
+                )}
               </div>
 
-              <p
-                className={`text-xs text-muted-foreground ${
-                  serverQuery.data?.server?.memory_status == "critical" &&
-                  "text-red-400"
-                }`}
-              >
-                more orders than prev month
+              <p className={`text-xs text-muted-foreground`}>
+                {year - 1} total revenue was{" "}
+                {Math.floor(overview.revenue.prev_total_revenue)}
               </p>
             </CardContent>
           </Card>
         )}
 
-{serverQuery.isLoading ? (
+        {isLoading ? (
           <CardSkeleton />
         ) : (
           <Card className=" border-none">
@@ -103,19 +115,26 @@ const SalesDetails = React.forwardRef<HTMLDivElement, SalesDetailsProps>(
             </CardHeader>
             <CardContent className="flex flex-col ">
               <div className="text-2xl font-bold flex items-center gap-2">
-                <span>1500000</span>
-                <span className="text-green-400 flex text-sm items-center gap-2">
-                  + 5 % <PiChartLineUp className=" " size={25} />
-                </span>
+                <span>{Math.floor(overview.profit.total_gross_profit)}</span>
+
+                {overview.profit.growth_percentage > 0 ? (
+                  <span className="text-green-400 flex text-sm items-center gap-2">
+                    + {Math.floor(overview.profit.growth_percentage)} %{" "}
+                    <PiChartLineUp className=" " size={25} />
+                  </span>
+                ) : (
+                  <div className="text-2xl font-bold flex items-center gap-2">
+                    <span className="text-red-400 flex text-sm items-center gap-2">
+                      - {Math.floor(overview.profit.growth_percentage)} %{" "}
+                      <PiChartLineDown className=" " size={25} />
+                    </span>
+                  </div>
+                )}
               </div>
 
-              <p
-                className={`text-xs text-muted-foreground ${
-                  serverQuery.data?.server?.memory_status == "critical" &&
-                  "text-red-400"
-                }`}
-              >
-                more orders than prev month
+              <p className={`text-xs text-muted-foreground`}>
+                {year - 1} gross profit was{" "}
+                {Math.floor(overview.profit.prev_total_gross_profit)}
               </p>
             </CardContent>
           </Card>
