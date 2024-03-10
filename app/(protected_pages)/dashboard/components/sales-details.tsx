@@ -12,6 +12,8 @@ import { PiChartLineDown } from "react-icons/pi";
 import { RiMoneyPoundCircleFill } from "react-icons/ri";
 import { OrderContext } from "../context/OrderContext";
 import { OrderContextType } from "@/types";
+import LeftToRightTransaction from "@/components/ui/left-to-right-transition";
+import { abbreviateNumber } from "js-abbreviation-number";
 
 interface SalesDetailsProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -23,7 +25,10 @@ const SalesDetails = React.forwardRef<HTMLDivElement, SalesDetailsProps>(
 
     return (
       <div
-        className={cn("grid gap-4 grid-col-1 md:grid-cols-2 lg:grid-cols-3", className)}
+        className={cn(
+          "grid gap-4 grid-col-1 md:grid-cols-2 lg:grid-cols-3",
+          className
+        )}
         ref={ref}
         {...props}
       >
@@ -38,8 +43,11 @@ const SalesDetails = React.forwardRef<HTMLDivElement, SalesDetailsProps>(
               <FaBox className="text-muted-foreground" />
             </CardHeader>
             <CardContent className="flex flex-col ">
-              <div className="text-2xl font-semibold flex items-center gap-2">
-                <span>{overview.order.total_order.toLocaleString()}</span>
+              <LeftToRightTransaction
+                key={overview.order.total_order.toLocaleString()}
+                className="text-2xl font-semibold flex items-center gap-2"
+              >
+                <span>{abbreviateNumber(overview.order.total_order, 2)}</span>
 
                 {overview.order.growth_percentage > 0 ? (
                   <span className="text-green-400 flex text-sm items-center gap-2">
@@ -54,11 +62,11 @@ const SalesDetails = React.forwardRef<HTMLDivElement, SalesDetailsProps>(
                     </span>
                   </div>
                 )}
-              </div>
+              </LeftToRightTransaction>
 
               <p className={`text-xs text-muted-foreground`}>
                 {year - 1} total orders was{" "}
-                {overview.order.prev_total_order.toLocaleString()}
+                {abbreviateNumber(overview.order.prev_total_order, 2)}
               </p>
             </CardContent>
           </Card>
@@ -78,10 +86,13 @@ const SalesDetails = React.forwardRef<HTMLDivElement, SalesDetailsProps>(
               />
             </CardHeader>
             <CardContent className="flex flex-col ">
-              <div className="text-2xl font-semibold flex items-center gap-2 whitespace-nowrap">
+              <LeftToRightTransaction
+                key={overview.order.total_order.toLocaleString()}
+                className="text-2xl font-semibold flex items-center gap-2 whitespace-nowrap "
+              >
                 <span>
                   <span className=" text-muted-foreground font-medium">£</span>{" "}
-                  {Math.floor(overview.revenue.total_revenue).toLocaleString()}
+                  {abbreviateNumber(overview.revenue.total_revenue, 2)}
                 </span>
 
                 {overview.revenue.growth_percentage > 0 ? (
@@ -97,11 +108,11 @@ const SalesDetails = React.forwardRef<HTMLDivElement, SalesDetailsProps>(
                     </span>
                   </div>
                 )}
-              </div>
+              </LeftToRightTransaction>
 
               <p className={`text-xs text-muted-foreground`}>
-                {year - 1} total revenue was{" "}
-                £ {Math.floor(overview.revenue.prev_total_revenue).toLocaleString()}
+                {year - 1} total revenue was £{" "}
+                {abbreviateNumber(overview.revenue.prev_total_revenue, 2)}
               </p>
             </CardContent>
           </Card>
@@ -118,12 +129,13 @@ const SalesDetails = React.forwardRef<HTMLDivElement, SalesDetailsProps>(
               <FaChartPie size={22} className="text-muted-foreground" />
             </CardHeader>
             <CardContent className="flex flex-col ">
-              <div className="text-2xl font-semibold flex items-center gap-2 whitespace-nowrap">
+              <LeftToRightTransaction
+                key={overview.order.total_order.toLocaleString()}
+                className="text-2xl font-semibold flex items-center gap-2 whitespace-nowrap"
+              >
                 <span>
-                <span className=" text-muted-foreground font-medium">£</span>{" "}
-                  {Math.floor(
-                    overview.profit.total_gross_profit
-                  ).toLocaleString()}
+                  <span className=" text-muted-foreground font-medium">£</span>{" "}
+                  {abbreviateNumber(overview.profit.total_gross_profit, 2)}
                 </span>
 
                 {overview.profit.growth_percentage > 0 ? (
@@ -139,11 +151,11 @@ const SalesDetails = React.forwardRef<HTMLDivElement, SalesDetailsProps>(
                     </span>
                   </div>
                 )}
-              </div>
+              </LeftToRightTransaction>
 
               <p className={`text-xs text-muted-foreground`}>
-                {year - 1} gross profit was{" "}
-                £ {Math.floor(overview.profit.prev_total_gross_profit).toLocaleString()}
+                {year - 1} gross profit was £{" "}
+                {abbreviateNumber(overview.profit.prev_total_gross_profit, 2)}
               </p>
             </CardContent>
           </Card>

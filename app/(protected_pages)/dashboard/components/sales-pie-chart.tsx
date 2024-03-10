@@ -10,6 +10,7 @@ import { OrderContextType } from "@/types";
 import ChartContainer from "@/components/ui/chart-container";
 import { arraySum } from "@/helpers";
 import { Skeleton } from "@/components/ui/skeleton";
+import ListingEffect from "@/components/ui/listing-effect";
 
 interface SalesPieChartProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -60,17 +61,21 @@ const SalesPieChart = React.forwardRef<HTMLDivElement, SalesPieChartProps>(
             </div>
             {!!overview.pie_chart_data.length ? (
               overview.pie_chart_data.map((data, index) => (
-                <ProgressBar
-                  key={index}
-                  name={data.country}
-                  percentage={Math.fround(
-                    (data.total_order /
-                      arraySum(
-                        overview.pie_chart_data.map((d) => d.total_order)
-                      )) *
-                      100
-                  )}
-                />
+                <ListingEffect
+                  key={data.total_order + index+ Math.random()}
+                  delay={index / 10 + 0.1}
+                >
+                  <ProgressBar
+                    name={data.country}
+                    percentage={Math.fround(
+                      (data.total_order /
+                        arraySum(
+                          overview.pie_chart_data.map((d) => d.total_order)
+                        )) *
+                        100
+                    )}
+                  />
+                </ListingEffect>
               ))
             ) : (
               <div className="flex flex-col gap-2">

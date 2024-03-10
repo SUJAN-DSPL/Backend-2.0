@@ -20,6 +20,7 @@ import ChartContainer from "@/components/ui/chart-container";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useTheme } from "next-themes";
 import { motion, stagger } from "framer-motion";
+import ListingEffect from "@/components/ui/listing-effect";
 
 interface GeoSalesChartProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -91,16 +92,9 @@ const GeoSalesChart = React.forwardRef<HTMLDivElement, GeoSalesChartProps>(
                 overview.geo_chart_data.map((charData, index) => {
                   return (
                     !!charData.total_order && (
-                      <motion.div
-                        initial={{ opacity: 0, scale: 0.3, x: -50 }}
-                        animate={{ opacity: 1, scale: 1, x: 0 }}
-                        transition={{
-                          ease: "easeInOut",
-                          duration: 0.2,
-                         delay: index/10 + 0.1
-                        }}
-                        whileHover={{ scale: 0.9 }}
+                      <ListingEffect
                         key={charData.total_order}
+                        delay={index / 10 + 0.1}
                         className="flex items-center justify-between gap-5 text-muted-foreground cursor-pointer"
                       >
                         <div className="flex items-center">
@@ -126,7 +120,7 @@ const GeoSalesChart = React.forwardRef<HTMLDivElement, GeoSalesChartProps>(
                             £ {charData.total_revenue.toLocaleString()}
                           </small>
                         </Badge>
-                      </motion.div>
+                      </ListingEffect>
                     )
                   );
                 })
