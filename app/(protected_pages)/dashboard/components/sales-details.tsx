@@ -23,7 +23,7 @@ const SalesDetails = React.forwardRef<HTMLDivElement, SalesDetailsProps>(
 
     return (
       <div
-        className={cn("grid gap-4 md:grid-cols-2 lg:grid-cols-3", className)}
+        className={cn("grid gap-4 grid-col-1 md:grid-cols-2 lg:grid-cols-3", className)}
         ref={ref}
         {...props}
       >

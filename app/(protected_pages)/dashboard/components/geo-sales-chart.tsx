@@ -19,6 +19,7 @@ import { OrderContextType } from "@/types";
 import ChartContainer from "@/components/ui/chart-container";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useTheme } from "next-themes";
+import { motion, stagger } from "framer-motion";
 
 interface GeoSalesChartProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -52,13 +53,13 @@ const GeoSalesChart = React.forwardRef<HTMLDivElement, GeoSalesChartProps>(
     return (
       <Card className={cn("col-span-3", className)} ref={ref} {...props}>
         <CardContent>
-          <div className=" grid lg:grid-cols-7 p-3 gap-6 relative overflow-hidden ">
+          <div className=" grid grid-cols-1 lg:grid-cols-7 p-3 gap-6 relative overflow-hidden ">
             <div className="col-span-4">
               <p className="font-semibold">Revenue By Country </p>
               <p className="text-xs text-muted-foreground">
                 Most revenue generated from Uk
               </p>
-              <div className="h-[42vh]">
+              <div className="h-[42vh] hidden md:block">
                 <ChartContainer
                   isLoading={isLoading}
                   type="Geo"
@@ -85,14 +86,22 @@ const GeoSalesChart = React.forwardRef<HTMLDivElement, GeoSalesChartProps>(
               </div>
             </div>
 
-            <div className="col-span-3 flex flex-col gap-3 absolute z-10 right-0 top-10">
+            <div className="col-span-3 flex flex-col gap-3 md:absolute z-10 right-0 top-10">
               {!!overview.geo_chart_data.length ? (
                 overview.geo_chart_data.map((charData, index) => {
                   return (
                     !!charData.total_order && (
-                      <div
+                      <motion.div
+                        initial={{ opacity: 0, scale: 0.3, x: -50 }}
+                        animate={{ opacity: 1, scale: 1, x: 0 }}
+                        transition={{
+                          ease: "easeInOut",
+                          duration: 0.2,
+                         delay: index/10 + 0.1
+                        }}
+                        whileHover={{ scale: 0.9 }}
+                        key={charData.total_order}
                         className="flex items-center justify-between gap-5 text-muted-foreground cursor-pointer"
-                        key={index}
                       >
                         <div className="flex items-center">
                           <Avatar className="h-6 w-6 uppercase">
@@ -117,19 +126,26 @@ const GeoSalesChart = React.forwardRef<HTMLDivElement, GeoSalesChartProps>(
                             £ {charData.total_revenue.toLocaleString()}
                           </small>
                         </Badge>
-                      </div>
+                      </motion.div>
                     )
                   );
                 })
               ) : (
                 <div className="flex flex-col gap-2">
                   {Array.from({ length: 10 }, () => null).map((_, index) => (
-                    <div className="flex items-center space-x-4" key={index}>
+                    <motion.div
+                      initial={{ opacity: 0, y: 50 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.9 }}
+                      className="flex items-center space-x-4"
+                      key={index}
+                    >
                       <Skeleton className="h-8 w-8 rounded-full" />
                       <div className="space-y-2">
                         <Skeleton className="h-4 w-[100px]" />
                       </div>
-                    </div>
+                    </motion.div>
                   ))}
                 </div>
               )}

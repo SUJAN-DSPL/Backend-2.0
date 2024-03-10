@@ -29,7 +29,9 @@ const SalesAreaChart = React.forwardRef<HTMLDivElement, SalesAreaChartProps>(
     return (
       <Card className={cn("col-span-3", className)} ref={ref} {...props}>
         <CardHeader className="">
-          <p className="font-semibold">Revenue With Unit Sales & PPC Cost</p>
+          <p className=" text-sm md:text-base font-semibold md:font-semibold">
+            Revenue With Unit Sales & PPC Cost
+          </p>
         </CardHeader>
         <CardContent>
           <div className=" h-[40vh]">

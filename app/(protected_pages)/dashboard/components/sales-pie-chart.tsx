@@ -27,8 +27,8 @@ const SalesPieChart = React.forwardRef<HTMLDivElement, SalesPieChartProps>(
             compare the market statistics
           </p>
         </CardHeader>
-        <CardContent className="grid grid-cols-6">
-          <div className="col-span-3 h-[45vh]">
+        <CardContent className="grid grid-cols-1 md:grid-cols-6">
+          <div className="col-span-3 h-[45vh] hidden md:block">
             <ChartContainer
               isLoading={isLoading}
               type="Pie"
