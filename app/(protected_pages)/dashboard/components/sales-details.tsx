@@ -17,7 +17,7 @@ interface SalesDetailsProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 const SalesDetails = React.forwardRef<HTMLDivElement, SalesDetailsProps>(
   ({ className, children, ...props }, ref) => {
-    const { isLoading, overview, year } = React.useContext(
+    const { isLoading, overview, year, updateYear } = React.useContext(
       OrderContext
     ) as OrderContextType;
 
@@ -38,8 +38,8 @@ const SalesDetails = React.forwardRef<HTMLDivElement, SalesDetailsProps>(
               <FaBox className="text-muted-foreground" />
             </CardHeader>
             <CardContent className="flex flex-col ">
-              <div className="text-2xl font-bold flex items-center gap-2">
-                <span>{overview.order.total_order}</span>
+              <div className="text-2xl font-semibold flex items-center gap-2">
+                <span>{overview.order.total_order.toLocaleString()}</span>
 
                 {overview.order.growth_percentage > 0 ? (
                   <span className="text-green-400 flex text-sm items-center gap-2">
@@ -47,7 +47,7 @@ const SalesDetails = React.forwardRef<HTMLDivElement, SalesDetailsProps>(
                     <PiChartLineUp className=" " size={25} />
                   </span>
                 ) : (
-                  <div className="text-2xl font-bold flex items-center gap-2">
+                  <div className="text-2xl font-semibold flex items-center gap-2">
                     <span className="text-red-400 flex text-sm items-center gap-2">
                       - {Math.floor(overview.order.growth_percentage)} %{" "}
                       <PiChartLineDown className=" " size={25} />
@@ -57,7 +57,8 @@ const SalesDetails = React.forwardRef<HTMLDivElement, SalesDetailsProps>(
               </div>
 
               <p className={`text-xs text-muted-foreground`}>
-                {year - 1} total orders was {overview.order.prev_total_order}
+                {year - 1} total orders was{" "}
+                {overview.order.prev_total_order.toLocaleString()}
               </p>
             </CardContent>
           </Card>
@@ -77,8 +78,11 @@ const SalesDetails = React.forwardRef<HTMLDivElement, SalesDetailsProps>(
               />
             </CardHeader>
             <CardContent className="flex flex-col ">
-              <div className="text-2xl font-bold flex items-center gap-2">
-                <span>{Math.floor(overview.revenue.total_revenue)}</span>
+              <div className="text-2xl font-semibold flex items-center gap-2 whitespace-nowrap">
+                <span>
+                  <span className=" text-muted-foreground font-medium">£</span>{" "}
+                  {Math.floor(overview.revenue.total_revenue).toLocaleString()}
+                </span>
 
                 {overview.revenue.growth_percentage > 0 ? (
                   <span className="text-green-400 flex text-sm items-center gap-2">
@@ -86,7 +90,7 @@ const SalesDetails = React.forwardRef<HTMLDivElement, SalesDetailsProps>(
                     <PiChartLineUp className=" " size={25} />
                   </span>
                 ) : (
-                  <div className="text-2xl font-bold flex items-center gap-2">
+                  <div className="text-2xl font-semibold flex items-center gap-2">
                     <span className="text-red-400 flex text-sm items-center gap-2">
                       - {Math.floor(overview.revenue.growth_percentage)} %{" "}
                       <PiChartLineDown className=" " size={25} />
@@ -97,7 +101,7 @@ const SalesDetails = React.forwardRef<HTMLDivElement, SalesDetailsProps>(
 
               <p className={`text-xs text-muted-foreground`}>
                 {year - 1} total revenue was{" "}
-                {Math.floor(overview.revenue.prev_total_revenue)}
+                £ {Math.floor(overview.revenue.prev_total_revenue).toLocaleString()}
               </p>
             </CardContent>
           </Card>
@@ -114,8 +118,13 @@ const SalesDetails = React.forwardRef<HTMLDivElement, SalesDetailsProps>(
               <FaChartPie size={22} className="text-muted-foreground" />
             </CardHeader>
             <CardContent className="flex flex-col ">
-              <div className="text-2xl font-bold flex items-center gap-2">
-                <span>{Math.floor(overview.profit.total_gross_profit)}</span>
+              <div className="text-2xl font-semibold flex items-center gap-2 whitespace-nowrap">
+                <span>
+                <span className=" text-muted-foreground font-medium">£</span>{" "}
+                  {Math.floor(
+                    overview.profit.total_gross_profit
+                  ).toLocaleString()}
+                </span>
 
                 {overview.profit.growth_percentage > 0 ? (
                   <span className="text-green-400 flex text-sm items-center gap-2">
@@ -123,7 +132,7 @@ const SalesDetails = React.forwardRef<HTMLDivElement, SalesDetailsProps>(
                     <PiChartLineUp className=" " size={25} />
                   </span>
                 ) : (
-                  <div className="text-2xl font-bold flex items-center gap-2">
+                  <div className="text-2xl font-semibold flex items-center gap-2">
                     <span className="text-red-400 flex text-sm items-center gap-2">
                       - {Math.floor(overview.profit.growth_percentage)} %{" "}
                       <PiChartLineDown className=" " size={25} />
@@ -134,7 +143,7 @@ const SalesDetails = React.forwardRef<HTMLDivElement, SalesDetailsProps>(
 
               <p className={`text-xs text-muted-foreground`}>
                 {year - 1} gross profit was{" "}
-                {Math.floor(overview.profit.prev_total_gross_profit)}
+                £ {Math.floor(overview.profit.prev_total_gross_profit).toLocaleString()}
               </p>
             </CardContent>
           </Card>

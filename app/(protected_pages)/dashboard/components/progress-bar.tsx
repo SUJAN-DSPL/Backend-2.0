@@ -17,11 +17,11 @@ const ProgressBar = React.forwardRef<HTMLDivElement, ProgressBarProps>(
         <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
           <div
             className={`bg-primary h-2.5 rounded-full `}
-            style={{ width: percentage }}
+            style={{ width: `${percentage + 1}%` }}
           ></div>
         </div>
         <small className="text-xs font-medium text-muted-foreground dark:text-white whitespace-nowrap">
-          {percentage} %
+          {percentage.toFixed(4)} %
         </small>
       </div>
     );

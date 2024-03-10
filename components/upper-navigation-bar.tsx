@@ -16,9 +16,16 @@ import Link from "next/link";
 import { Input } from "./ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 
+import { OrderContextType } from "@/types";
+import { OrderContext } from "@/app/(protected_pages)/dashboard/context/OrderContext";
+import YearSelector from "@/app/(protected_pages)/dashboard/components/year-selector";
+
 interface UpperNavigationBarProps {}
 
 const UpperNavigationBar: FC<UpperNavigationBarProps> = () => {
+  // const d = React.useContext(OrderContext) as OrderContextType;
+  // console.log(d,"hello")
+
   return (
     <header
       className="supports-backdrop-blur:bg-background/60 sticky top-0 z-40 w-full 
@@ -33,8 +40,8 @@ const UpperNavigationBar: FC<UpperNavigationBarProps> = () => {
               <p>Good Morning, Sujan</p>
               <p className=" font-semibold text-xs text-muted-foreground">
                 Market has been{" "}
-                <span className=" text-secondary-foreground">growing</span>
-                {" "} in Volume of{" "}
+                <span className=" text-secondary-foreground">growing</span> in
+                Volume of{" "}
                 <span className=" text-secondary-foreground">30%</span>
               </p>
             </div>
@@ -42,14 +49,7 @@ const UpperNavigationBar: FC<UpperNavigationBarProps> = () => {
         </div>
         <div className=" flex items-center gap-2">
           {/* <Input type="text" className="w-80" placeholder="search..." /> */}
-          <Tabs defaultValue="overview" className="mt-1">
-            <TabsList className="grid grid-cols-4">
-              <TabsTrigger value="overview">2021</TabsTrigger>
-              <TabsTrigger value="top5Traffics">2022</TabsTrigger>
-              <TabsTrigger value="trafficByCountry">2023</TabsTrigger>
-              <TabsTrigger value="trafficByCountry">2024</TabsTrigger>
-            </TabsList>
-          </Tabs>
+          {/* <YearSelector /> */}
           <ThemeToggler />
         </div>
       </div>

@@ -1,13 +1,15 @@
 "use client";
 
 import React, { useState } from "react";
-
 import { UseQueryResult, useQuery } from "@tanstack/react-query";
 import {
+  CountryCodeType,
   OrderContextType,
   OrderOverviewType,
   OrdersReportRawDataType,
 } from "@/types";
+import { group } from "console";
+import { arraySum, countries, groupBy, months } from "@/helpers";
 
 export const OrderContext = React.createContext<OrderContextType | null>(null);
 
@@ -63,6 +65,7 @@ const OrderContextProvider: React.FC<{ children: React.ReactNode }> = ({
     geo_chart_data: [],
     area_chart_data: [],
     pie_chart_data: [],
+    bar_chart_data: [],
   });
 
   React.useEffect(() => {
@@ -77,11 +80,12 @@ const OrderContextProvider: React.FC<{ children: React.ReactNode }> = ({
         geo_chart_data: getGeoChartData(),
         area_chart_data: getAreaChartData(),
         pie_chart_data: getPieChartData(),
+        bar_chart_data: getBarChartData(),
       };
     });
 
     setIsLoading(false);
-  }, [ordersRawData.data]);
+  }, [ordersRawData.data,year]);
 
   // * getter functions
 
@@ -228,16 +232,13 @@ const OrderContextProvider: React.FC<{ children: React.ReactNode }> = ({
     const data = getYearData();
     const prevYearData = getPrevYearData();
 
-    
-
     const totalProductQuantity = arraySum(
-      data.map((item) => parseInt(item.total_product_quantity??0))
-    );
-    
-    const prevTotalProductQuantity = arraySum(
-      prevYearData.map((item) => parseInt(item.total_product_quantity??0))
+      data.map((item) => parseInt(item.total_product_quantity ?? 0))
     );
 
+    const prevTotalProductQuantity = arraySum(
+      prevYearData.map((item) => parseInt(item.total_product_quantity ?? 0))
+    );
 
     const totalProductQuantityAvg =
       totalProductQuantity / groupBy(data, "date_key").length;
@@ -254,21 +255,168 @@ const OrderContextProvider: React.FC<{ children: React.ReactNode }> = ({
     };
   };
 
-  const getGeoChartData = (): [] => {
-    return [];
+  // * graphs
+
+  type GetGeoChartDataType = Array<{
+    code: CountryCodeType;
+    name: string;
+    image: string;
+    total_revenue: number;
+    total_order: number;
+  }>;
+
+  const getGeoChartData = (): GetGeoChartDataType => {
+    const orderData = getYearData();
+    const data = countries
+      .map(({ code, name, image }) => {
+        const countryData = orderData.filter((d) => d.country_code == code);
+        return {
+          code: code,
+          name: name,
+          image: image,
+          total_revenue: Math.floor(
+            arraySum(
+              countryData.map(
+                (d) => d.total_selling_amount - d.total_refund_amount
+              )
+            )
+          ),
+          total_order: arraySum(countryData.map((d) => d.total_orders)),
+        };
+      })
+      .sort((a, b) => b.total_order - a.total_order);
+
+    return data;
   };
 
-  const getAreaChartData = (): [] => {
-    return [];
+  type GetAreaChartDataType = Array<{
+    month: string;
+    revenue: number;
+    unit_sales: number;
+    ppc_cost: number;
+  }>;
+
+  const getAreaChartData = (): GetAreaChartDataType => {
+    const orderData = getYearData();
+    return months.map((month) => {
+      return {
+        month: month.slice(0, 3).toUpperCase(),
+        revenue: Math.floor(
+          arraySum(
+            orderData
+              .filter((d) => d.month === month)
+              .map((d) => d.total_selling_amount - d.total_refund_amount)
+          )
+        ),
+        unit_sales: arraySum(
+          orderData
+            .filter((d) => d.month === month)
+            .map((d) => parseInt(d.total_product_quantity ?? 0))
+        ),
+        ppc_cost: Math.floor(
+          arraySum(
+            orderData
+              .filter((d) => d.month === month)
+              .map((d) => d.total_ppc_fee)
+          )
+        ),
+      };
+    });
   };
 
-  const getPieChartData = (): [] => {
-    return [];
+  type GetPieChartDataType = Array<{
+    country: CountryCodeType;
+    total_order: number;
+  }>;
+
+  const getPieChartData = (): GetPieChartDataType => {
+    const orderData = getYearData();
+
+    return groupBy(orderData, "country_code").map((group) => {
+      return {
+        country: group[0].country_code,
+        total_order: arraySum(group.map((d) => d.total_orders)),
+      };
+    }).sort((a, b) => b.total_order - a.total_order);
+  };
+
+  type GetBarChartDataType = Array<{
+    month: string;
+    UK: number;
+    DE: number;
+    ES: number;
+    FR: number;
+    IT: number;
+    NL: number;
+    BR: number;
+    SE: number;
+    PL: number;
+    TR: number;
+  }>;
+
+  const getBarChartData = (): GetBarChartDataType => {
+    const orderData = getYearData();
+
+    return months.map((month) => {
+      return {
+        month: month.slice(0, 3).toUpperCase(),
+        UK: arraySum(
+          orderData
+            .filter((d) => d.month == month && d.country_code == "GB")
+            .map((d) => d.total_orders)
+        ),
+        DE: arraySum(
+          orderData
+            .filter((d) => d.month == month && d.country_code == "DE")
+            .map((d) => d.total_orders)
+        ),
+        ES: arraySum(
+          orderData
+            .filter((d) => d.month == month && d.country_code == "ES")
+            .map((d) => d.total_orders)
+        ),
+        FR: arraySum(
+          orderData
+            .filter((d) => d.month == month && d.country_code == "FR")
+            .map((d) => d.total_orders)
+        ),
+        IT: arraySum(
+          orderData
+            .filter((d) => d.month == month && d.country_code == "IT")
+            .map((d) => d.total_orders)
+        ),
+        NL: arraySum(
+          orderData
+            .filter((d) => d.month == month && d.country_code == "NL")
+            .map((d) => d.total_orders)
+        ),
+        BR: arraySum(
+          orderData
+            .filter((d) => d.month == month && d.country_code == "BR")
+            .map((d) => d.total_orders)
+        ),
+        SE: arraySum(
+          orderData
+            .filter((d) => d.month == month && d.country_code == "SE")
+            .map((d) => d.total_orders)
+        ),
+        PL: arraySum(
+          orderData
+            .filter((d) => d.month == month && d.country_code == "PL")
+            .map((d) => d.total_orders)
+        ),
+        TR: arraySum(
+          orderData
+            .filter((d) => d.month == month && d.country_code == "TR")
+            .map((d) => d.total_orders)
+        ),
+      };
+    });
   };
 
   const updateYear = (year: number) => setYear(year);
 
-  // * helpers functions
+  // * get raw data
 
   const getYearData = (): OrdersReportRawDataType["value"] => {
     return (ordersRawData.data?.value ?? []).filter((item) => {
@@ -285,27 +433,6 @@ const OrderContextProvider: React.FC<{ children: React.ReactNode }> = ({
       );
     });
   };
-
-  const arraySum = (array: Array<number>): number => {
-    return array.reduce(
-      (accumulator, currentValue) => accumulator + currentValue,
-      0
-    );
-  };
-
-  function groupBy<T>(array: T[], key: keyof T): T[][] {
-    const grouped: { [key: string]: T[] } = {};
-
-    array.forEach((item) => {
-      const groupByKey = String(item[key]);
-      if (!grouped[groupByKey]) {
-        grouped[groupByKey] = [];
-      }
-      grouped[groupByKey].push(item);
-    });
-
-    return Object.values(grouped);
-  }
 
   return (
     <OrderContext.Provider

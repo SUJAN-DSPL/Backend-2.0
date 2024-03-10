@@ -28,7 +28,7 @@ export type OrderContextType = {
 
 export type OrdersReportRawDataType = {
   value: Array<{
-    country_code: "DE" | "ES" | "FR" | "GB" | "IT" | "NL" | "PL" | "SE" | "TR";
+    country_code: CountryCodeType;
     year: number;
     month: string;
     total_orders: number;
@@ -43,6 +43,18 @@ export type OrdersReportRawDataType = {
     date_key: string;
   }>;
 };
+
+export type CountryCodeType =
+  | "DE"
+  | "ES"
+  | "FR"
+  | "GB"
+  | "IT"
+  | "NL"
+  | "PL"
+  | "SE"
+  | "BR"
+  | "TR";
 
 export type OrderOverviewType = {
   order: {
@@ -70,7 +82,44 @@ export type OrderOverviewType = {
     growth_percentage: number;
     prev_total_product_quantity: number;
   };
-  geo_chart_data: [];
-  area_chart_data: [];
-  pie_chart_data: [];
+  geo_chart_data:
+    | Array<{
+        code: CountryCodeType;
+        name: string;
+        image: string;
+        total_revenue: number;
+        total_order: number;
+      }>
+    | [];
+  area_chart_data:
+    | Array<{
+        month: string;
+        revenue: number;
+        unit_sales: number;
+        ppc_cost: number;
+      }>
+    | [];
+
+  pie_chart_data:
+    | Array<{
+        country: CountryCodeType;
+        total_order: number;
+      }>
+    | [];
+
+  bar_chart_data:
+    | Array<{
+        month: string;
+        UK: number;
+        DE: number;
+        ES: number;
+        FR: number;
+        IT: number;
+        NL: number;
+        BR: number;
+        SE: number;
+        PL: number;
+        TR: number;
+      }>
+    | [];
 };
