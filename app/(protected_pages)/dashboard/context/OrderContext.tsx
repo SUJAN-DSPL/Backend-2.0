@@ -16,7 +16,7 @@ export const OrderContext = React.createContext<OrderContextType | null>(null);
 const OrderContextProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const redisKey = "order_dashboard_report";
+  const redisKey = "order_overview_raw_data";
 
   const ordersRawData = useQuery({
     queryKey: [`order-report-raw-data`],
