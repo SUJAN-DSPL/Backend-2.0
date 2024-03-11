@@ -85,7 +85,7 @@ const OrderContextProvider: React.FC<{ children: React.ReactNode }> = ({
     });
 
     setIsLoading(false);
-  }, [ordersRawData.data,year]);
+  }, [ordersRawData.data, year]);
 
   // * getter functions
 
@@ -294,6 +294,7 @@ const OrderContextProvider: React.FC<{ children: React.ReactNode }> = ({
     revenue: number;
     unit_sales: number;
     ppc_cost: number;
+    total_orders: number;
   }>;
 
   const getAreaChartData = (): GetAreaChartDataType => {
@@ -320,6 +321,13 @@ const OrderContextProvider: React.FC<{ children: React.ReactNode }> = ({
               .map((d) => d.total_ppc_fee)
           )
         ),
+        total_orders: Math.floor(
+          arraySum(
+            orderData
+              .filter((d) => d.month === month)
+              .map((d) => d.total_orders)
+          )
+        ),
       };
     });
   };
@@ -332,12 +340,14 @@ const OrderContextProvider: React.FC<{ children: React.ReactNode }> = ({
   const getPieChartData = (): GetPieChartDataType => {
     const orderData = getYearData();
 
-    return groupBy(orderData, "country_code").map((group) => {
-      return {
-        country: group[0].country_code,
-        total_order: arraySum(group.map((d) => d.total_orders)),
-      };
-    }).sort((a, b) => b.total_order - a.total_order);
+    return groupBy(orderData, "country_code")
+      .map((group) => {
+        return {
+          country: group[0].country_code,
+          total_order: arraySum(group.map((d) => d.total_orders)),
+        };
+      })
+      .sort((a, b) => b.total_order - a.total_order);
   };
 
   type GetBarChartDataType = Array<{

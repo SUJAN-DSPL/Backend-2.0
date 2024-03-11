@@ -49,14 +49,18 @@ const PpcWithProduct = React.forwardRef<HTMLDivElement, PpcWithProductProps>(
 
                 {overview.ppc_cost.growth_percentage > 0 ? (
                   <span className="text-green-400 flex text-sm items-center gap-2">
-                    + {Math.floor(overview.ppc_cost.growth_percentage)} %{" "}
-                    <PiChartLineUp className=" " size={25} />
+                    +{" "}
+                    {Math.abs(Math.floor(overview.ppc_cost.growth_percentage))}{" "}
+                    % <PiChartLineUp className=" " size={25} />
                   </span>
                 ) : (
                   <div className="text-2xl font-semibold flex items-center gap-2">
                     <span className="text-red-400 flex text-sm items-center gap-2">
-                      - {Math.floor(overview.ppc_cost.growth_percentage)} %{" "}
-                      <PiChartLineDown className=" " size={25} />
+                      -{" "}
+                      {Math.abs(
+                        Math.floor(overview.ppc_cost.growth_percentage)
+                      )}{" "}
+                      % <PiChartLineDown className=" " size={25} />
                     </span>
                   </div>
                 )}
@@ -94,14 +98,19 @@ const PpcWithProduct = React.forwardRef<HTMLDivElement, PpcWithProductProps>(
 
                 {overview.product_quantity.growth_percentage > 0 ? (
                   <span className="text-green-400 flex text-sm items-center gap-2">
-                    + {Math.floor(overview.product_quantity.growth_percentage)}{" "}
+                    +{" "}
+                    {Math.abs(
+                      Math.floor(overview.product_quantity.growth_percentage)
+                    )}{" "}
                     % <PiChartLineUp className=" " size={25} />
                   </span>
                 ) : (
                   <div className="text-2xl font-semibold flex items-center gap-2">
                     <span className="text-red-400 flex text-sm items-center gap-2">
                       -{" "}
-                      {Math.floor(overview.product_quantity.growth_percentage)}{" "}
+                      {Math.abs(
+                        Math.floor(overview.product_quantity.growth_percentage)
+                      )}{" "}
                       % <PiChartLineDown className=" " size={25} />
                     </span>
                   </div>

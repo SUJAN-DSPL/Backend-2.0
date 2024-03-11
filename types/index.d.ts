@@ -97,6 +97,7 @@ export type OrderOverviewType = {
         revenue: number;
         unit_sales: number;
         ppc_cost: number;
+        total_orders: number;
       }>
     | [];
 

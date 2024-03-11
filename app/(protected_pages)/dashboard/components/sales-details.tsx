@@ -51,14 +51,14 @@ const SalesDetails = React.forwardRef<HTMLDivElement, SalesDetailsProps>(
 
                 {overview.order.growth_percentage > 0 ? (
                   <span className="text-green-400 flex text-sm items-center gap-2">
-                    + {Math.floor(overview.order.growth_percentage)} %{" "}
+                    + {Math.abs(Math.floor(overview.order.growth_percentage))} %{" "}
                     <PiChartLineUp className=" " size={25} />
                   </span>
                 ) : (
                   <div className="text-2xl font-semibold flex items-center gap-2">
                     <span className="text-red-400 flex text-sm items-center gap-2">
-                      - {Math.floor(overview.order.growth_percentage)} %{" "}
-                      <PiChartLineDown className=" " size={25} />
+                      - {Math.abs(Math.floor(overview.order.growth_percentage))}{" "}
+                      % <PiChartLineDown className=" " size={25} />
                     </span>
                   </div>
                 )}
@@ -97,14 +97,15 @@ const SalesDetails = React.forwardRef<HTMLDivElement, SalesDetailsProps>(
 
                 {overview.revenue.growth_percentage > 0 ? (
                   <span className="text-green-400 flex text-sm items-center gap-2">
-                    + {Math.floor(overview.revenue.growth_percentage)} %{" "}
-                    <PiChartLineUp className=" " size={25} />
+                    + {Math.abs(Math.floor(overview.revenue.growth_percentage))}{" "}
+                    % <PiChartLineUp className=" " size={25} />
                   </span>
                 ) : (
                   <div className="text-2xl font-semibold flex items-center gap-2">
                     <span className="text-red-400 flex text-sm items-center gap-2">
-                      - {Math.floor(overview.revenue.growth_percentage)} %{" "}
-                      <PiChartLineDown className=" " size={25} />
+                      -{" "}
+                      {Math.abs(Math.floor(overview.revenue.growth_percentage))}{" "}
+                      % <PiChartLineDown className=" " size={25} />
                     </span>
                   </div>
                 )}
@@ -140,14 +141,15 @@ const SalesDetails = React.forwardRef<HTMLDivElement, SalesDetailsProps>(
 
                 {overview.profit.growth_percentage > 0 ? (
                   <span className="text-green-400 flex text-sm items-center gap-2">
-                    + {Math.floor(overview.profit.growth_percentage)} %{" "}
-                    <PiChartLineUp className=" " size={25} />
+                    + {Math.abs(Math.floor(overview.profit.growth_percentage))}{" "}
+                    % <PiChartLineUp className=" " size={25} />
                   </span>
                 ) : (
                   <div className="text-2xl font-semibold flex items-center gap-2">
                     <span className="text-red-400 flex text-sm items-center gap-2">
-                      - {Math.floor(overview.profit.growth_percentage)} %{" "}
-                      <PiChartLineDown className=" " size={25} />
+                      -{" "}
+                      {Math.abs(Math.floor(overview.profit.growth_percentage))}{" "}
+                      % <PiChartLineDown className=" " size={25} />
                     </span>
                   </div>
                 )}

@@ -64,6 +64,11 @@ const SalesAreaChart = React.forwardRef<HTMLDivElement, SalesAreaChartProps>(
                     />
                     <Line
                       type="monotone"
+                      dataKey="total_orders"
+                      stroke="#ea580c"
+                    />
+                    <Line
+                      type="monotone"
                       dataKey="unit_sales"
                       stroke="#6d28d9"
                     />
