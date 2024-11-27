@@ -12,7 +12,7 @@ export async function POST(
 
   try {
     const data = await request.json();
-    const redisResponse = await redis.set(params.key, data);
+    const redisResponse = await redis.set(params.key, data, {ex: 60 * 60 * 24 * 5});
     return NextResponse.json({ status: true }, { status: 200 });
   } catch (error: any) {
     return NextResponse.json(
